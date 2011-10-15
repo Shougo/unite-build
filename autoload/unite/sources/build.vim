@@ -28,20 +28,19 @@
 " }}}
 
 function! unite#sources#build#define() "{{{
-  " Init builders.
-  for name in map(split(globpath(&runtimepath,
-        \ 'autoload/unite/sources/build/builders/*.vim'), '\n'),
-        \ 'fnamemodify(v:val, ":t:r")')
-    let define = {'unite#sources#build#builders#' . name . '#define'}()
-    for dict in (type(define) == type([]) ? define : [define])
-      if !empty(dict) && !has_key(s:builders, dict.name)
-        let s:builders[dict.name] = dict
-      endif
-    endfor
-    unlet define
-  endfor
+  if empty(s:builders)
+    call s:init_builders()
+  endif
 
   return s:source
+endfunction "}}}
+
+function! unite#sources#build#get_builders_name() "{{{
+  if empty(s:builders)
+    call s:init_builders()
+  endif
+
+  return keys(s:builders)
 endfunction "}}}
 
 let s:builders = {}
@@ -58,7 +57,7 @@ function! s:source.hooks.on_init(args, context) "{{{
   if a:context.source__builder_name == ''
     " Detect builder.
     for builder in values(s:builders)
-      if builder.detect(a:args, a:context)
+      if has_key(builder, 'detect') && builder.detect(a:args, a:context)
         let a:context.source__builder_name = builder.name
         break
       endif
@@ -160,6 +159,20 @@ function! s:init_candidate(candidate)
   if !has_key(a:candidate, 'pattern')
     let a:candidate.pattern = ''
   endif
+endfunction
+
+function! s:init_builders()
+  for name in map(split(globpath(&runtimepath,
+        \ 'autoload/unite/sources/build/builders/*.vim'), '\n'),
+        \ 'fnamemodify(v:val, ":t:r")')
+    let define = {'unite#sources#build#builders#' . name . '#define'}()
+    for dict in (type(define) == type([]) ? define : [define])
+      if !empty(dict) && !has_key(s:builders, dict.name)
+        let s:builders[dict.name] = dict
+      endif
+    endfor
+    unlet define
+  endfor
 endfunction
 
 " vim: foldmethod=marker
