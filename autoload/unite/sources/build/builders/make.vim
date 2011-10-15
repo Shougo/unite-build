@@ -118,7 +118,7 @@ function! s:analyze_error(string, current_dir)
     let candidate.type = 'message'
   endif
 
-  let candidate.text = filename . ' : ' . join(list, ':')
+  let candidate.text = fnamemodify(filename, ':t') . ' : ' . join(list, ':')
   if stridx(candidate.text, '<') >= 0
     " Snip nested template.
     let candidate.text = s:snip_nest(candidate.text, '<', '>', 1)
