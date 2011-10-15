@@ -104,11 +104,10 @@ function! s:source.gather_candidates(args, context) "{{{
   let cmdline = a:context.source__builder.initialize(
         \ a:context.source__builder_args, a:context)
   call unite#print_message('[build] Command-line: ' . cmdline)
-  let a:context.source__proc = vimproc#pgroup_open(cmdline)
+  let a:context.source__proc = vimproc#plineopen3(cmdline)
 
   " Close handles.
   call a:context.source__proc.stdin.close()
-  call a:context.source__proc.stderr.close()
 
   return []
 endfunction "}}}
@@ -141,6 +140,7 @@ function! s:source.async_gather_candidates(args, context) "{{{
     \   'action__col' : v:val.col,
     \   'action__directory' :
     \       unite#util#path2directory(v:val.filename),
+    \   'is_dummy' : (v:val.type ==# 'message'),
     \ }")
 
   return candidates
