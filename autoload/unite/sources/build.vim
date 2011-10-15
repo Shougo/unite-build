@@ -67,11 +67,11 @@ function! s:source.hooks.on_init(args, context) "{{{
 endfunction"}}}
 function! s:source.hooks.on_syntax(args, context)"{{{
   syntax match uniteSource__Builder_Error
-        \ /\s*\[Error] : .*/ contained containedin=uniteSource__Build
+        \ /\s*\[Error\s*] : .*/ contained containedin=uniteSource__Build
   syntax match uniteSource__Builder_Warning
-        \ /\s*\[Warning] : .*/ contained containedin=uniteSource__Build
+        \ /\s*\[Warning\s*] : .*/ contained containedin=uniteSource__Build
   syntax match uniteSource__Builder_Message
-        \ /\s*\[Message] : .*/ contained containedin=uniteSource__Build
+        \ /\s*\[Message\s*] : .*/ contained containedin=uniteSource__Build
   highlight default link uniteSource__Builder_Error Error
   highlight default link uniteSource__Builder_Warning WarningMsg
   highlight default link uniteSource__Builder_Message Comment
@@ -104,7 +104,7 @@ function! s:source.gather_candidates(args, context) "{{{
   let cmdline = a:context.source__builder.initialize(
         \ a:context.source__builder_args, a:context)
   call unite#print_message('[build] Command-line: ' . cmdline)
-  let a:context.source__proc = vimproc#plineopen3(cmdline)
+  let a:context.source__proc = vimproc#pgroup_open(cmdline, 0, 2)
 
   " Close handles.
   call a:context.source__proc.stdin.close()
@@ -132,12 +132,13 @@ function! s:source.async_gather_candidates(args, context) "{{{
 
   call map(candidates,
     \ "{
-    \   'word': printf('[%s] : %s',
+    \   'word': printf('[%-7s] : %s',
     \       substitute(v:val.type, '^.', '\\u\\0', ''), v:val.text),
     \   'kind': (v:val.filename == '' ? 'common' : 'jump_list'),
     \   'action__path' : v:val.filename,
     \   'action__line' : v:val.line,
     \   'action__col' : v:val.col,
+    \   'action__pattern' : v:val.pattern,
     \   'action__directory' :
     \       unite#util#path2directory(v:val.filename),
     \   'is_dummy' : (v:val.type ==# 'message'),
@@ -155,6 +156,9 @@ function! s:init_candidate(candidate)
   endif
   if !has_key(a:candidate, 'col')
     let a:candidate.col = 0
+  endif
+  if !has_key(a:candidate, 'pattern')
+    let a:candidate.pattern = ''
   endif
 endfunction
 

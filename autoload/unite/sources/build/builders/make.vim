@@ -43,12 +43,84 @@ function! s:builder.detect(args, context) "{{{
 endfunction"}}}
 
 function! s:builder.initialize(args, context) "{{{
-  let a:context.builder__current_dir = getcwd()
+  let a:context.builder__dir_stack = []
+  let a:context.builder__current_dir =
+        \ unite#util#substitute_path_separator(getcwd())
   return g:unite_builder_make_command . ' ' . join(a:args)
 endfunction"}}}
 
 function! s:builder.parse(string, context) "{{{
-  return { 'type' : 'message', 'text' : a:string }
+  if a:string =~ '^\f\+\%([\d\+]\)\? Entering directory `\f\+'''
+    " Push current directory.
+    call insert(a:context.builder__dir_stack, a:context.builder__current_dir)
+    let a:context.builder__current_dir =
+        \ unite#util#substitute_path_separator(matchstr(a:string, '`\zs\f\+\ze'''))
+    return {}
+  elseif a:string =~ '^Making \f\+ in \f\+'
+    " Push current directory.
+    call insert(a:context.builder__dir_stack, a:context.builder__current_dir)
+    let a:context.builder__current_dir =
+        \ unite#util#substitute_path_separator(
+        \ matchstr(a:string, '^Making \f\+ in \zs\f\+\ze'))
+    return {}
+  elseif a:string =~ '^\f\+\%([\d\+]\)\? Leaving directory `\f\+'''
+    " Pop current directory.
+    let a:context.builder__current_dir = a:context.builder__dir_stack[0]
+    let a:context.builder__dir_stack = a:context.builder__dir_stack[1:]
+    return {}
+  endif
+
+  if a:string =~ ':'
+    " Error or warning.
+    return s:analyze_error(a:string, a:context.builder__current_dir)
+  endif
+
+  return {}
 endfunction "}}}
+
+function! s:analyze_error(string, current_dir)
+  let [word, list] = [a:string, split(a:string[2:], ':')]
+  let candidate = {}
+
+  if len(word) == 1 && unite#util#is_win()
+    let candidate.word = word . list[0]
+    let list = list[1:]
+  endif
+
+  let filename = unite#util#substitute_path_separator(word[:1].list[0])
+  let candidate.filename = (filename !~ '^/\|\a\+:/') ?
+        \ a:current_dir . '/' . filename : filename
+
+  let list = list[1:]
+
+  if !filereadable(filename) && '^\f\+:'
+    " Message.
+    return { 'type' : 'message', 'text' : a:string }
+  endif
+
+  if len(list) >= 0 && list[0] =~ '^\d\+$'
+    let candidate.line = list[0]
+    if len(list) >= 1 && list[1] =~ '^\d\+$'
+      let candidate.col = list[1]
+      let list = list[1:]
+    endif
+
+    let list = list[1:]
+  endif
+
+  if len(list) > 1 && list[0] =~ '\s*\a\+'
+    let candidate.type = tolower(matchstr(list[0], '\s*\zs\a\+'))
+    if candidate.type != 'error' && candidate.type != 'warning'
+      let candidate.type = 'message'
+    endif
+    let list = list[1:]
+  else
+    let candidate.type = 'message'
+  endif
+
+  let candidate.text = filename . ' : ' . join(list, ':')
+
+  return candidate
+endfunction
 
 " vim: foldmethod=marker
