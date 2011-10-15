@@ -1,0 +1,102 @@
+*unite-build.txt*	Unite build source
+
+Version: 0.1
+Author : Shougo <Shougo.Matsu@gmail.com>
+License: MIT license  {{{
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+}}}
+
+CONTENTS					*unite-build-contents*
+
+Usage			|unite-build-usage|
+Install			|unite-build-install|
+Interface		|unite-build-interface|
+  Variables		  |unite-build-variables|
+    Sources variables	    |unite-build-builders-variables|
+  Sources		  |unite-build-builders|
+Create source		|unite-build-create-builder|
+Configulation Examples	|unite-build-builder-examples|
+Changelog		|unite-build-changelog|
+
+==============================================================================
+USAGE						*unite-build-usage*
+
+	This source nominates builder output.
+	If arguments is not given, builder is detected.
+
+		Source arguments:
+		1. builder name.
+
+	Start unite build source. Builder is detected.
+>
+	:Unite build
+<
+==============================================================================
+INSTALL						*unite-build-install*
+
+Required: vimproc, unite.vim
+
+https://github.com/Shougo/vimproc
+https://github.com/Shougo/unite.vim
+
+==============================================================================
+INTERFACE					*unite-build-interface*
+
+------------------------------------------------------------------------------
+VARIABLES 					*unite-build-variables*
+
+BUILDER VARIABLES				*unite-build-builder-variables*
+
+g:unite_builder_make_command			*g:unite_builder_make_command*
+		Todo
+
+		Default is "make".
+
+==============================================================================
+BUILDERS					*unite-build-builders*
+
+						*unite-build-builder-make*
+make		Todo
+
+==============================================================================
+CREATE BUILDER					*unite-build-create-builder*
+
+Todo
+
+------------------------------------------------------------------------------
+BUILDER ATTRIBUTES				*unite-build-builder-attributes*
+
+						*unite-build-builder-attribute-name*
+name			String		(Required)
+			Todo
+
+==============================================================================
+EXAMPLES					*unite-build-examples*
+>
+	
+>
+==============================================================================
+CHANGELOG					*unite-changelog*
+
+2011-10-15
+- Added unite build source.
+- Added make builder.
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:fdl=0:
