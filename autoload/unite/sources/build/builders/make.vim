@@ -119,8 +119,32 @@ function! s:analyze_error(string, current_dir)
   endif
 
   let candidate.text = filename . ' : ' . join(list, ':')
+  if stridx(candidate.text, '<') >= 0
+    " Snip nested template.
+    let candidate.text = s:snip_nest(candidate.text, '<', '>', 1)
+  endif
 
   return candidate
 endfunction
+
+" s:snip_nest('std::vector<std::vector<int>>', '<', '>', 1)
+"  => "std::vector<std::vector<>>"
+function! s:snip_nest(str, start, end, max)"{{{
+  let _ = ''
+  let nest_level = 0
+  for c in split(a:str, '\zs')
+    if c ==# a:start
+      let nest_level += 1
+      let _ .= c
+    elseif c ==# a:end
+      let nest_level -= 1
+      let _ .= c
+    elseif nest_level <= a:max
+      let _ .= c
+    endif
+  endfor
+
+  return _
+endfunction"}}}
 
 " vim: foldmethod=marker
