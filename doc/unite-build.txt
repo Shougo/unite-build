@@ -50,7 +50,7 @@ USAGE						*unite-build-usage*
 ==============================================================================
 INSTALL						*unite-build-install*
 
-Required: vimproc, unite.vim
+Requirements: vimproc and unite.vim
 
 https://github.com/Shougo/vimproc
 https://github.com/Shougo/unite.vim
@@ -93,32 +93,34 @@ description		String		(Optional)
 						*unite-build-builder-attribute-initialize*
 initialize		Function	(Required)
 			Called when unite buffer is initialized.
-			This function return build command(Ex: "make").
+			This function returns the build command (Ex: "make".)
 			
 			Function arguments:
 			{args}, {context}
 
 						*unite-build-builder-attribute-detect*
 detect			Function	(Optional)
-			Called when omitted builder name.
-			If detect the build system, this function return 1.
+			Called when unite-build doesn't receive a builder name.
+			If you'd like to detect the build system, set this
+			function to return 1.
 			
 			Function arguments:
 			{args}, {context}
 
 						*unite-build-builder-attribute-parse*
 parse			Function	(Required)
-			Called when build process has output.
-			This function return {candidate}.
-			If the candidate is empty, unite-build ignore the candidate.
-			Please refer to |unite-notation-{candidate}|.
+			Called when build process has an output.
+			This function returns {candidate}.
+			If the candidate is empty, unite-build ignores the
+			candidate.  Please refer to
+			|unite-notation-{candidate}|.
 
 {candidate}					*unite-build-notation-{candidate}*
-			Candidate dictionary. It has below information.
+			Candidate dictionary. It has information below.
 
 			type			(String)	(Required)
 				Candidate type.
-				"error" or "warning" or "message".
+				"error", "warning" or "message".
 
 			text			(String)	(Required)
 				Error message text.
