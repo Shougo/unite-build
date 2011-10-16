@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: make.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 15 Oct 2011.
+" Last Modified: 16 Oct 2011.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -50,7 +50,8 @@ function! s:builder.initialize(args, context) "{{{
 endfunction"}}}
 
 function! s:builder.parse(string, context) "{{{
-  if a:string =~ '^\f\+\%([\d\+]\)\? Entering directory `\f\+'''
+  if a:string =~
+        \'^\f\+\%([\d\+]\)\? Entering directory `\f\+''\|`\f\+'' に入ります'
     " Push current directory.
     call insert(a:context.builder__dir_stack, a:context.builder__current_dir)
     let a:context.builder__current_dir =
@@ -63,7 +64,9 @@ function! s:builder.parse(string, context) "{{{
         \ unite#util#substitute_path_separator(
         \ matchstr(a:string, '^Making \f\+ in \zs\f\+\ze'))
     return {}
-  elseif a:string =~ '^\f\+\%([\d\+]\)\? Leaving directory `\f\+'''
+  elseif a:string =~
+        \'^\f\+\%([\d\+]\)\? Leaving directory `\f\+''\|`\f\+'' から出ます'
+        \ && !empty(a:context.builder__dir_stack)
     " Pop current directory.
     let a:context.builder__current_dir = a:context.builder__dir_stack[0]
     let a:context.builder__dir_stack = a:context.builder__dir_stack[1:]

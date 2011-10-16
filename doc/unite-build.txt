@@ -143,6 +143,9 @@ EXAMPLES					*unite-build-examples*
 ==============================================================================
 CHANGELOG					*unite-changelog*
 
+2011-10-16
+- Improved make parse.
+
 2011-10-15
 - Added unite build source.
 - Added make builder.
