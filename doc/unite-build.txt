@@ -147,6 +147,7 @@ CHANGELOG					*unite-changelog*
 
 2011-10-16
 - Improved make parse.
+- Set locale.
 
 2011-10-15
 - Added unite build source.

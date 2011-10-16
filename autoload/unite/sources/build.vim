@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: build.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 15 Oct 2011.
+" Last Modified: 16 Oct 2011.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -103,7 +103,12 @@ function! s:source.gather_candidates(args, context) "{{{
   let cmdline = a:context.source__builder.initialize(
         \ a:context.source__builder_args, a:context)
   call unite#print_message('[build] Command-line: ' . cmdline)
+
+  " Set locale to English.
+  let lang_save = $LANG
+  let $LANG = 'C'
   let a:context.source__proc = vimproc#pgroup_open(cmdline, 0, 2)
+  let $LANG = lang_save
 
   " Close handles.
   call a:context.source__proc.stdin.close()
