@@ -51,21 +51,21 @@ endfunction"}}}
 
 function! s:builder.parse(string, context) "{{{
   if a:string =~
-        \'\<\f\+\%([\d\+]\)\? Entering directory `\f\+'''
+        \'\<\f\+\%(\[\d\+\]\)\?\s*:\s*Entering\s\+directory\s\+`\f\+'''
     " Push current directory.
     call insert(a:context.builder__dir_stack, a:context.builder__current_dir)
     let a:context.builder__current_dir =
         \ unite#util#substitute_path_separator(matchstr(a:string, '`\zs\f\+\ze'''))
     return {}
-  elseif a:string =~ '\<Making \f\+ in \f\+'
+  elseif a:string =~ '\<Making\%(\s\+\f\+\)\?\s\+in\s\+\f\+'
     " Push current directory.
     call insert(a:context.builder__dir_stack, a:context.builder__current_dir)
     let a:context.builder__current_dir =
         \ unite#util#substitute_path_separator(
-        \ matchstr(a:string, '^Making \f\+ in \zs\f\+\ze'))
+        \ matchstr(a:string, '\<in\s\+\zs\f\+\ze'))
     return {}
   elseif a:string =~
-        \'\<\f\+\%([\d\+]\)\? Leaving directory `\f\+'''
+        \'\<\f\+\%(\[\d\+\]\)\?\s*:\s*Leaving\s\+directory\s\+`\f\+'''
         \ && !empty(a:context.builder__dir_stack)
     " Pop current directory.
     let a:context.builder__current_dir = a:context.builder__dir_stack[0]
@@ -73,7 +73,7 @@ function! s:builder.parse(string, context) "{{{
     return {}
   endif
 
-  if a:string =~ ':'
+  if a:string =~ ':' && a:string !~# '\s\+Nothing to be done for `\f\+'''
     " Error or warning.
     return s:analyze_error(a:string, a:context.builder__current_dir)
   endif
