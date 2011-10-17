@@ -141,7 +141,7 @@ parse			Function	(Required)
 EXAMPLES					*unite-build-examples*
 >
 	
->
+<
 ==============================================================================
 CHANGELOG					*unite-changelog*
 
