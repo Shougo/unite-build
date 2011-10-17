@@ -145,7 +145,7 @@ function! s:source.async_gather_candidates(args, context) "{{{
     \   'action__pattern' : v:val.pattern,
     \   'action__directory' :
     \       unite#util#path2directory(v:val.filename),
-    \   'is_matched' : (v:val.type ==# 'message'),
+    \   'is_matched' : (v:val.type !=# 'message'),
     \ }")
 
   return candidates
