@@ -138,7 +138,7 @@ function! s:source.async_gather_candidates(args, context) "{{{
     \ "{
     \   'word': printf('[%-7s] : %s',
     \       substitute(v:val.type, '^.', '\\u\\0', ''), v:val.text),
-    \   'kind': (v:val.filename == '' ? 'common' : 'jump_list'),
+    \   'kind': (filereadable(v:val.filename)? 'jump_list' : 'common'),
     \   'action__path' : v:val.filename,
     \   'action__line' : v:val.line,
     \   'action__col' : v:val.col,
