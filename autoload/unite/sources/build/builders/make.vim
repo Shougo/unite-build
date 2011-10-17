@@ -73,7 +73,8 @@ function! s:builder.parse(string, context) "{{{
     return {}
   endif
 
-  if a:string =~ ':' && a:string !~# '\s\+Nothing to be done for `\f\+'''
+  if a:string =~ ':' && a:string !~?
+        \ '\s\+Nothing to be done for `\f\+''\|\s\+is up to date.'
     " Error or warning.
     return s:analyze_error(a:string, a:context.builder__current_dir)
   endif
