@@ -145,6 +145,9 @@ EXAMPLES					*unite-build-examples*
 ==============================================================================
 CHANGELOG					*unite-changelog*
 
+2011-10-17
+- Fixed make builder.
+
 2011-10-16
 - Improved make parse.
 - Set locale.

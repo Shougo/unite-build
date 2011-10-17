@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: make.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 16 Oct 2011.
+" Last Modified: 17 Oct 2011.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -51,13 +51,13 @@ endfunction"}}}
 
 function! s:builder.parse(string, context) "{{{
   if a:string =~
-        \'^\f\+\%([\d\+]\)\? Entering directory `\f\+'''
+        \'\<\f\+\%([\d\+]\)\? Entering directory `\f\+'''
     " Push current directory.
     call insert(a:context.builder__dir_stack, a:context.builder__current_dir)
     let a:context.builder__current_dir =
         \ unite#util#substitute_path_separator(matchstr(a:string, '`\zs\f\+\ze'''))
     return {}
-  elseif a:string =~ '^Making \f\+ in \f\+'
+  elseif a:string =~ '\<Making \f\+ in \f\+'
     " Push current directory.
     call insert(a:context.builder__dir_stack, a:context.builder__current_dir)
     let a:context.builder__current_dir =
@@ -65,7 +65,7 @@ function! s:builder.parse(string, context) "{{{
         \ matchstr(a:string, '^Making \f\+ in \zs\f\+\ze'))
     return {}
   elseif a:string =~
-        \'^\f\+\%([\d\+]\)\? Leaving directory `\f\+'''
+        \'\<\f\+\%([\d\+]\)\? Leaving directory `\f\+'''
         \ && !empty(a:context.builder__dir_stack)
     " Pop current directory.
     let a:context.builder__current_dir = a:context.builder__dir_stack[0]
@@ -96,7 +96,7 @@ function! s:analyze_error(string, current_dir)
 
   let list = list[1:]
 
-  if !filereadable(filename) && '^\f\+:'
+  if !filereadable(filename) && '\<\f\+:'
     " Message.
     return { 'type' : 'message', 'text' : a:string }
   endif
