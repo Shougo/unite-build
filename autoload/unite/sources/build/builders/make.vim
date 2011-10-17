@@ -74,7 +74,8 @@ function! s:builder.parse(string, context) "{{{
   endif
 
   if a:string =~ ':' && a:string !~?
-        \ '\s\+Nothing to be done for `\f\+''\|\s\+is up to date.'
+        \ '\s\+Nothing to be done for `\f\+''\|' .
+        \ '\s\+is up to date.\|\s\+from \f\+\s*:\s*\d\+[:,]\|In file included from'
     " Error or warning.
     return s:analyze_error(a:string, a:context.builder__current_dir)
   endif
@@ -83,7 +84,13 @@ function! s:builder.parse(string, context) "{{{
 endfunction "}}}
 
 function! s:analyze_error(string, current_dir)
-  let [word, list] = [a:string, split(a:string[2:], ':')]
+  let string = a:string
+  if stridx(string, '<') >= 0
+    " Snip nested template.
+    let string = s:snip_nest(string, '<', '>', 1)
+  endif
+
+  let [word, list] = [string, split(string[2:], ':')]
   let candidate = {}
 
   if len(word) == 1 && unite#util#is_win()
@@ -99,7 +106,7 @@ function! s:analyze_error(string, current_dir)
 
   if !filereadable(filename) && '\<\f\+:'
     " Message.
-    return { 'type' : 'message', 'text' : a:string }
+    return { 'type' : 'message', 'text' : string }
   endif
 
   if len(list) > 0 && list[0] =~ '^\d\+$'
@@ -123,10 +130,6 @@ function! s:analyze_error(string, current_dir)
   endif
 
   let candidate.text = fnamemodify(filename, ':t') . ' : ' . join(list, ':')
-  if stridx(candidate.text, '<') >= 0
-    " Snip nested template.
-    let candidate.text = s:snip_nest(candidate.text, '<', '>', 1)
-  endif
 
   return candidate
 endfunction

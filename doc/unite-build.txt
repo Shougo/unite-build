@@ -149,6 +149,7 @@ CHANGELOG					*unite-changelog*
 - Fixed make builder.
 - Improved candidates behavior.
 - Fixed make builder error.
+- Improved make builder filtering.
 
 2011-10-16
 - Improved make parse.
