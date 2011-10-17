@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: make.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 17 Oct 2011.
+" Last Modified: 18 Oct 2011.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -74,8 +74,10 @@ function! s:builder.parse(string, context) "{{{
   endif
 
   if a:string =~ ':' && a:string !~?
-        \ '\s\+Nothing to be done for `\f\+''\|' .
-        \ '\s\+is up to date.\|\s\+from \f\+\s*:\s*\d\+[:,]\|In file included from'
+        \ ' Nothing to be done for `\f\+''\|' .
+        \ ' is up to date.\|\s\+from \f\+\s*:\s*\d\+[:,]\|In file included from\|' .
+        \ ' (Each undeclared identifier is reported only once,\|' .
+        \ ' for each function it appears in.'
     " Error or warning.
     return s:analyze_error(a:string, a:context.builder__current_dir,
           \ a:context.source__builder_is_bang)

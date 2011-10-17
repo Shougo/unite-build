@@ -149,6 +149,9 @@ EXAMPLES					*unite-build-examples*
 ==============================================================================
 CHANGELOG					*unite-changelog*
 
+2011-10-18
+- Improved make builder filtering.
+
 2011-10-17
 - Fixed make builder.
 - Improved candidates behavior.
