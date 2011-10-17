@@ -102,9 +102,9 @@ function! s:analyze_error(string, current_dir)
     return { 'type' : 'message', 'text' : a:string }
   endif
 
-  if len(list) >= 0 && list[0] =~ '^\d\+$'
+  if len(list) > 0 && list[0] =~ '^\d\+$'
     let candidate.line = list[0]
-    if len(list) >= 1 && list[1] =~ '^\d\+$'
+    if len(list) > 1 && list[1] =~ '^\d\+$'
       let candidate.col = list[1]
       let list = list[1:]
     endif
