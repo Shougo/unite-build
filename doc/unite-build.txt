@@ -1,4 +1,4 @@
-*unite-build.txt*	Unite build source
+*unite-build.txt*	Build by unite interface
 
 Version: 0.1
 Author : Shougo <Shougo.Matsu@gmail.com>
@@ -37,7 +37,7 @@ Changelog		|unite-build-changelog|
 ==============================================================================
 USAGE						*unite-build-usage*
 
-	This source nominates builder output.
+	This source nominates builder output asynchronously.
 	If arguments is not given, builder is detected.
 	If argument 1 is "!", errors is not filtered.
 
@@ -67,7 +67,7 @@ VARIABLES 					*unite-build-variables*
 BUILDER VARIABLES				*unite-build-builder-variables*
 
 g:unite_builder_make_command			*g:unite_builder_make_command*
-		Todo
+		|unite-build-builder-make| uses "make" command.
 
 		Default is "make".
 
@@ -75,7 +75,8 @@ g:unite_builder_make_command			*g:unite_builder_make_command*
 BUILDERS					*unite-build-builders*
 
 						*unite-build-builder-make*
-make		Todo
+make		This builder outputs "make" command output.
+		It requires "Makefile" in current directory.
 
 ==============================================================================
 CREATE BUILDER					*unite-build-create-builder*
@@ -154,6 +155,7 @@ CHANGELOG					*unite-changelog*
 - Fixed make builder error.
 - Improved make builder filtering.
 - Supported not filtered behavior.
+- Improved documentation.
 
 2011-10-16
 - Improved make parse.
