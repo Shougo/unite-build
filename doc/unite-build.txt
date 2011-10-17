@@ -39,6 +39,7 @@ USAGE						*unite-build-usage*
 
 	This source nominates builder output.
 	If arguments is not given, builder is detected.
+	If argument 1 is "!", errors is not filtered.
 
 		Source arguments:
 		1. builder name.
@@ -46,6 +47,8 @@ USAGE						*unite-build-usage*
 	Start unite build source. Builder is detected.
 >
 	:Unite build
+	:Unite build:make
+	:Unite build:!
 <
 ==============================================================================
 INSTALL						*unite-build-install*
@@ -150,6 +153,7 @@ CHANGELOG					*unite-changelog*
 - Improved candidates behavior.
 - Fixed make builder error.
 - Improved make builder filtering.
+- Supported not filtered behavior.
 
 2011-10-16
 - Improved make parse.

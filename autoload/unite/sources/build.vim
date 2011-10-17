@@ -51,13 +51,16 @@ let s:source = {
       \ }
 
 function! s:source.hooks.on_init(args, context) "{{{
-  let a:context.source__builder_name = get(a:args, 0, '')
-  let a:context.source__builder_args = a:args[1:]
+  let a:context.source__builder_is_bang = get(a:args, 0, '') == '!'
+  let args = a:context.source__builder_is_bang ?
+        \ a:args[1:] : a:args
+  let a:context.source__builder_name = get(args, 0, '')
+  let a:context.source__builder_args = args[1:]
 
   if a:context.source__builder_name == ''
     " Detect builder.
     for builder in values(s:builders)
-      if has_key(builder, 'detect') && builder.detect(a:args, a:context)
+      if has_key(builder, 'detect') && builder.detect(args, a:context)
         let a:context.source__builder_name = builder.name
         break
       endif

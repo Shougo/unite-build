@@ -77,15 +77,17 @@ function! s:builder.parse(string, context) "{{{
         \ '\s\+Nothing to be done for `\f\+''\|' .
         \ '\s\+is up to date.\|\s\+from \f\+\s*:\s*\d\+[:,]\|In file included from'
     " Error or warning.
-    return s:analyze_error(a:string, a:context.builder__current_dir)
+    return s:analyze_error(a:string, a:context.builder__current_dir,
+          \ a:context.source__builder_is_bang)
   endif
 
-  return {}
+  return a:context.source__builder_is_bang ?
+        \ { 'type' : 'message', 'text' : a:string } : {}
 endfunction "}}}
 
-function! s:analyze_error(string, current_dir)
+function! s:analyze_error(string, current_dir, is_bang)
   let string = a:string
-  if stridx(string, '<') >= 0
+  if !a:is_bang && stridx(string, '<') >= 0
     " Snip nested template.
     let string = s:snip_nest(string, '<', '>', 1)
   endif
