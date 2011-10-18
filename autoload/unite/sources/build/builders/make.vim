@@ -39,7 +39,7 @@ let s:builder = {
       \ }
 
 function! s:builder.detect(args, context) "{{{
-  return filereadable('Makefile')
+  return filereadable('Makefile') || filereadable('makefile')
 endfunction"}}}
 
 function! s:builder.initialize(args, context) "{{{

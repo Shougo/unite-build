@@ -151,6 +151,7 @@ CHANGELOG					*unite-changelog*
 
 2011-10-18
 - Improved make builder filtering.
+- Detect makefile.
 
 2011-10-17
 - Fixed make builder.
