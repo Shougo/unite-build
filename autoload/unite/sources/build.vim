@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: build.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 17 Oct 2011.
+" Last Modified: 22 Oct 2011.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -24,10 +24,31 @@
 " }}}
 "=============================================================================
 
+" Variables  "{{{
+call unite#util#set_default('g:unite_build_error_text', '!!')
+call unite#util#set_default('g:unite_build_warning_text', '??')
+call unite#util#set_default('g:unite_build_error_highlight', 'Error')
+call unite#util#set_default('g:unite_build_warning_highlight', 'Todo')
+call unite#util#set_default('g:unite_build_error_icon', '')
+call unite#util#set_default('g:unite_build_warning_icon', '')
+"}}}
+
 " Actions "{{{
 " }}}
 
 function! unite#sources#build#define() "{{{
+  if has('signs')
+    " Init signs.
+    let error_icon = filereadable(g:unite_build_error_icon) ?
+          \ ' icon=' . escape(expand(g:unite_build_error_icon), '| \') : ''
+    let warning_icon = filereadable(g:unite_build_warning_icon) ?
+          \ ' icon=' . escape(expand(g:unite_build_warning_icon), '| \') : ''
+    execute 'sign define unite_build_error text=' . g:unite_build_error_text .
+          \ ' linehl=' . g:unite_build_error_highlight . error_icon
+    execute 'sign define unite_build_warning text=' . g:unite_build_warning_text .
+          \ ' linehl=' . g:unite_build_warning_highlight . warning_icon
+  endif
+
   if empty(s:builders)
     call s:init_builders()
   endif
@@ -42,6 +63,9 @@ function! unite#sources#build#get_builders_name() "{{{
 
   return keys(s:builders)
 endfunction "}}}
+
+let s:init_id = 10000
+let s:sign_id_dict = {}
 
 let s:builders = {}
 let s:source = {
@@ -96,6 +120,23 @@ function! s:source.gather_candidates(args, context) "{{{
     return []
   endif
 
+  if has('signs')
+    " Clear previous signs.
+    if has_key(s:sign_id_dict, getcwd())
+      let dict = s:sign_id_dict[getcwd()]
+      for cnt in range(1, dict.len)
+        execute 'sign unplace' dict.id
+      endfor
+
+      call remove(s:sign_id_dict, getcwd())
+    endif
+
+    let s:sign_id_dict[getcwd()] = {
+          \ 'id' : (s:init_id + len(s:sign_id_dict)),
+          \ 'len' : 0,
+          \ }
+  endif
+
   let a:context.source__builder =
         \ s:builders[a:context.source__builder_name]
 
@@ -128,14 +169,27 @@ function! s:source.async_gather_candidates(args, context) "{{{
   endif
 
   let candidates = []
-   for string in map(stdout.read_lines(-1, 300),
+  for string in map(stdout.read_lines(-1, 300),
         \ 'iconv(v:val, &termencoding, &encoding)')
-     let candidate = a:context.source__builder.parse(string, a:context)
-     if !empty(candidate)
-       call s:init_candidate(candidate)
-       call add(candidates, candidate)
-     endif
-   endfor
+    let candidate = a:context.source__builder.parse(string, a:context)
+    if !empty(candidate)
+      call s:init_candidate(candidate)
+      call add(candidates, candidate)
+    endif
+  endfor
+
+  if has('signs')
+    " Set signs icon.
+    let dict = s:sign_id_dict[getcwd()]
+    for candidate in candidates
+      if (candidate.type ==# 'warning' || candidate.type ==# 'error')
+            \ && buflisted(candidate.filename)
+        execute 'sign place' dict.id 'line='.candidate.line
+              \ 'name=unite_build_'.candidate.type 'file='.candidate.filename
+        let dict.len += 1
+      endif
+    endfor
+  endif
 
   call map(candidates,
     \ "{

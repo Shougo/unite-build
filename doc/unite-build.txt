@@ -64,6 +64,35 @@ INTERFACE					*unite-build-interface*
 ------------------------------------------------------------------------------
 VARIABLES 					*unite-build-variables*
 
+g:unite_build_error_text			*g:unite_build_error_text*
+g:unite_build_warning_text			*g:unite_build_warning_text*
+		The occured error or warning markup text(see |:sign-define|
+		for details).
+		Note: This option must be set before call unite.vim
+		functions or unite.vim command.
+
+		Default value is "!!" and "??".
+
+g:unite_build_error_highlight			*g:unite_build_error_highlight*
+g:unite_build_warning_highlight			*g:unite_build_warning_highlight*
+		The error or warning highlight setting(see
+		|:sign-define| for details).
+		Note: This option must be set before call unite.vim
+		functions or unite.vim command.
+		
+		Default value is "Error" and "Todo".
+
+g:unite_build_error_icon			*g:unite_build_error_icon*
+g:unite_build_warning_icon			*g:unite_build_warning_icon*
+		The error or warning markup icon path(see |:sign-define| for
+		details). This variable is enabled only in GUI Vim.
+		If the icon is not found(or empty), text markers are displayed
+		instead.
+		Note: This option must be set before call unite.vim
+		functions or unite.vim command.
+
+		Default value is "".
+
 BUILDER VARIABLES				*unite-build-builder-variables*
 
 g:unite_builder_make_command			*g:unite_builder_make_command*
@@ -148,6 +177,9 @@ EXAMPLES					*unite-build-examples*
 <
 ==============================================================================
 CHANGELOG					*unite-changelog*
+
+2011-10-22
+- Supported signs.
 
 2011-10-18
 - Improved make builder filtering.
