@@ -27,6 +27,7 @@ CONTENTS					*unite-build-contents*
 Usage			|unite-build-usage|
 Install			|unite-build-install|
 Interface		|unite-build-interface|
+  Commands		  |unite-build-commands|
   Variables		  |unite-build-variables|
     Sources variables	    |unite-build-builders-variables|
   Sources		  |unite-build-builders|
@@ -60,6 +61,12 @@ https://github.com/Shougo/unite.vim
 
 ==============================================================================
 INTERFACE					*unite-build-interface*
+
+------------------------------------------------------------------------------
+COMMANDS 					*unite-build-commands*
+
+:UniteBuildClearHighlight			*:UniteBuildClearHighlight*
+		Clear error highlight and signs in current directory.
 
 ------------------------------------------------------------------------------
 VARIABLES 					*unite-build-variables*
@@ -177,6 +184,9 @@ EXAMPLES					*unite-build-examples*
 <
 ==============================================================================
 CHANGELOG					*unite-changelog*
+
+2011-11-03
+- Added :UniteBuildClearHighlight command.
 
 2011-10-22
 - Supported signs.

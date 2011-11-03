@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: build.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 22 Oct 2011.
+" Last Modified: 03 Nov 2011.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -47,6 +47,8 @@ function! unite#sources#build#define() "{{{
           \ ' linehl=' . g:unite_build_error_highlight . error_icon
     execute 'sign define unite_build_warning text=' . g:unite_build_warning_text .
           \ ' linehl=' . g:unite_build_warning_highlight . warning_icon
+
+    command! UniteBuildClearHighlight call s:clear_highlight()
   endif
 
   if empty(s:builders)
@@ -122,14 +124,7 @@ function! s:source.gather_candidates(args, context) "{{{
 
   if has('signs')
     " Clear previous signs.
-    if has_key(s:sign_id_dict, getcwd())
-      let dict = s:sign_id_dict[getcwd()]
-      for cnt in range(1, dict.len)
-        execute 'sign unplace' dict.id
-      endfor
-
-      call remove(s:sign_id_dict, getcwd())
-    endif
+    call s:clear_highlight()
 
     let s:sign_id_dict[getcwd()] = {
           \ 'id' : (s:init_id + len(s:sign_id_dict)),
@@ -235,6 +230,18 @@ function! s:init_builders()
     endfor
     unlet define
   endfor
+endfunction
+
+function! s:clear_highlight()
+  " Clear previous signs.
+  if has_key(s:sign_id_dict, getcwd())
+    let dict = s:sign_id_dict[getcwd()]
+    for cnt in range(1, dict.len)
+      execute 'sign unplace' dict.id
+    endfor
+
+    call remove(s:sign_id_dict, getcwd())
+  endif
 endfunction
 
 " vim: foldmethod=marker
