@@ -185,6 +185,9 @@ EXAMPLES					*unite-build-examples*
 ==============================================================================
 CHANGELOG					*unite-changelog*
 
+2011-11-11
+- Improved build error.
+
 2011-11-03
 - Added :UniteBuildClearHighlight command.
 

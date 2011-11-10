@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: build.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 03 Nov 2011.
+" Last Modified: 11 Nov 2011.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -160,6 +160,11 @@ function! s:source.async_gather_candidates(args, context) "{{{
   if stdout.eof
     " Disable async.
     call unite#print_message('[build] Completed.')
+
+    let [cond, status] = subproc.waitpid()
+    if status
+      call unite#print_message('[build] Build error occurred.')
+    endif
     let a:context.is_async = 0
   endif
 
