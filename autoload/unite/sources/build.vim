@@ -161,7 +161,7 @@ function! s:source.async_gather_candidates(args, context) "{{{
     " Disable async.
     call unite#print_message('[build] Completed.')
 
-    let [cond, status] = subproc.waitpid()
+    let [cond, status] = a:context.source__proc.waitpid()
     if status
       call unite#print_message('[build] Build error occurred.')
     endif
