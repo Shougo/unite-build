@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: build.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 06 Dec 2011.
+" Last Modified: 12 Dec 2011.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -202,7 +202,8 @@ function! s:source.async_gather_candidates(args, context) "{{{
     \   'action__path' : v:val.filename,
     \   'action__line' : v:val.line,
     \   'action__col' : v:val.col,
-    \   'action__pattern' : v:val.pattern,
+    \   'action__pattern' :
+    \          unite#util#escape_pattern(v:val.pattern),
     \   'action__directory' :
     \       unite#util#path2directory(v:val.filename),
     \   'is_matched' : (v:val.type !=# 'message'),
