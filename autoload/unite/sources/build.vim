@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: build.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 12 Dec 2011.
+" Last Modified: 26 Oct 2012.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -173,7 +173,7 @@ function! s:source.async_gather_candidates(args, context) "{{{
 
   let candidates = []
   for string in map(stdout.read_lines(-1, 300),
-        \ 'iconv(v:val, &termencoding, &encoding)')
+        \ "unite#util#iconv(v:val, 'char', &encoding)")
     let candidate = a:context.source__builder.parse(string, a:context)
     if !empty(candidate)
       call s:init_candidate(candidate)
