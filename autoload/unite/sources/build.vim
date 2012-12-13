@@ -93,7 +93,7 @@ function! s:source.hooks.on_init(args, context) "{{{
     endfor
   endif
 endfunction"}}}
-function! s:source.hooks.on_syntax(args, context)"{{{
+function! s:source.hooks.on_syntax(args, context) "{{{
   syntax match uniteSource__Builder_Error
         \ /\s*\[Error\s*] : .*/ contained containedin=uniteSource__Build
   syntax match uniteSource__Builder_Warning

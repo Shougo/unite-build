@@ -145,7 +145,7 @@ endfunction
 
 " s:snip_nest('std::vector<std::vector<int>>', '<', '>', 1)
 "  => "std::vector<std::vector<>>"
-function! s:snip_nest(str, start, end, max)"{{{
+function! s:snip_nest(str, start, end, max) "{{{
   let _ = ''
   let nest_level = 0
   for c in split(a:str, '\zs')
