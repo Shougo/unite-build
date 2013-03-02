@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: make.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 30 Oct 2012.
+" Last Modified: 02 Mar 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -97,14 +97,14 @@ function! s:analyze_error(string, current_dir, is_bang)
   let [word, list] = [string, split(string[2:], ':')]
   let candidate = {}
 
+  if empty(list)
+    " Message.
+    return { 'type' : 'message', 'text' : string }
+  endif
+
   if len(word) == 1 && unite#util#is_win()
     let candidate.word = word . list[0]
     let list = list[1:]
-  endif
-
-  if !empty(list)
-    " Message.
-    return { 'type' : 'message', 'text' : string }
   endif
 
   let filename = unite#util#substitute_path_separator(word[:1].list[0])
