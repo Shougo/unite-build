@@ -103,9 +103,14 @@ g:unite_build_warning_icon			*g:unite_build_warning_icon*
 BUILDER VARIABLES				*unite-build-builder-variables*
 
 g:unite_builder_make_command			*g:unite_builder_make_command*
-		|unite-build-builder-make| uses "make" command.
+		|unite-build-builder-make| uses as the "make" command.
 
 		Default is "make".
+
+g:unite_builder_repoman_command			*g:unite_builder_repoman_command*
+		|unite-build-builder-repoman| uses as the "repoman" command.
+
+		Default is "repoman".
 
 ==============================================================================
 BUILDERS					*unite-build-builders*
@@ -113,6 +118,13 @@ BUILDERS					*unite-build-builders*
 						*unite-build-builder-make*
 make		This builder outputs "make" command output.
 		It requires "Makefile" in current directory.
+
+						*unite-build-builder-repoman*
+repoman		This builder outputs "repoman manifest" command output.
+		repoman is a tool for Gentoo Linux to manage ebuild files, the
+		recipe files for its own package management system Portage.
+
+		It requires at least one ebuild in current directory.
 
 ==============================================================================
 CREATE BUILDER					*unite-build-create-builder*
@@ -184,6 +196,9 @@ EXAMPLES					*unite-build-examples*
 <
 ==============================================================================
 CHANGELOG					*unite-build-changelog*
+
+2013-03-09
+- Added repoman builder.
 
 2013-03-02
 - Fixed error.
