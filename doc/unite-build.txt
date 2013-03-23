@@ -32,7 +32,7 @@ Interface		|unite-build-interface|
     Sources variables	    |unite-build-builders-variables|
   Sources		  |unite-build-builders|
 Create source		|unite-build-create-builder|
-Configulation Examples	|unite-build-builder-examples|
+Configuration Examples	|unite-build-builder-examples|
 Changelog		|unite-build-changelog|
 
 ==============================================================================
@@ -73,7 +73,7 @@ VARIABLES 					*unite-build-variables*
 
 g:unite_build_error_text			*g:unite_build_error_text*
 g:unite_build_warning_text			*g:unite_build_warning_text*
-		The occured error or warning markup text(see |:sign-define|
+		The occurred error or warning markup text(see |:sign-define|
 		for details).
 		Note: This option must be set before call unite.vim
 		functions or unite.vim command.
