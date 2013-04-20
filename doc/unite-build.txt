@@ -51,6 +51,11 @@ USAGE						*unite-build-usage*
 	:Unite build:make
 	:Unite build:!
 <
+
+unite-builder description (Japanese) by rbtnn.
+http://qiita.com/items/270bcf94a8f588d3cd38
+
+
 ==============================================================================
 INSTALL						*unite-build-install*
 
