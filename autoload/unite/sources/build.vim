@@ -255,7 +255,7 @@ function! s:clear_highlight()
 endfunction
 
 function! s:is_binary(filename)
-  return get(readfile(path, 'b', 1), 0, '') =~
+  return get(readfile(a:filename, 'b', 1), 0, '') =~
         \'\%(^.ELF\|!<arch>\|^MZ\)\|[\x00-\x09\x10-\x1a\x1c-\x1f]\{5,}'
 endfunction
 
