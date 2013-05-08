@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: build.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 26 Oct 2012.
+" Last Modified: 08 May 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -198,7 +198,8 @@ function! s:source.async_gather_candidates(args, context) "{{{
     \ "{
     \   'word': printf('[%-7s] : %s',
     \       substitute(v:val.type, '^.', '\\u\\0', ''), v:val.text),
-    \   'kind': (filereadable(v:val.filename)? 'jump_list' : 'common'),
+    \   'kind': (filereadable(v:val.filename) &&
+    \            !s:is_binary(v:val.filename)? 'jump_list' : 'common'),
     \   'action__path' : v:val.filename,
     \   'action__line' : v:val.line,
     \   'action__col' : v:val.col,
@@ -251,6 +252,11 @@ function! s:clear_highlight()
 
     call remove(s:sign_id_dict, getcwd())
   endif
+endfunction
+
+function! s:is_binary(filename)
+  return get(readfile(path, 'b', 1), 0, '') =~
+        \'\%(^.ELF\|!<arch>\|^MZ\)\|[\x00-\x09\x10-\x1a\x1c-\x1f]\{5,}'
 endfunction
 
 " vim: foldmethod=marker

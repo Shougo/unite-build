@@ -202,6 +202,9 @@ EXAMPLES					*unite-build-examples*
 ==============================================================================
 CHANGELOG					*unite-build-changelog*
 
+2013-05-08
+- Check binary file.
+
 2013-03-09
 - Added repoman builder.
 
