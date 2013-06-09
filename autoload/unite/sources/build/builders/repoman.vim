@@ -49,10 +49,20 @@ function! s:builder.initialize(args, context) "{{{
   return g:unite_builder_repoman_command . ' ' . arg
 endfunction"}}}
 
-function! s:builder.parse(string, context) "{{{
+function! s:builder.parse(string, context)
   if empty(a:string)
     return {}
   endif
+  if a:context.source__builder_args[0] ==# 'manifest'
+    return s:_parse_manifest(a:string, a:context)
+  elseif a:context.source__builder_args[0] ==# 'full'
+    return s:_parse_full(a:string, a:context)
+  else
+    return {'type': 'message', 'text': printf('# %s', a:string)}
+  endif
+endfunction
+
+function! s:_parse_manifest(string, context)
   let matches = matchlist(a:string, ">>> \\(\\w\\+\\) \\(.*\\)$")
   "echomsg string([a:context.__state, matches])
   if len(matches) > 0 && matches[2] !=# ''
@@ -66,6 +76,13 @@ function! s:builder.parse(string, context) "{{{
     endif
   endif
   return {'type': 'message', 'text': printf('  %s', a:string)}
-endfunction "}}}
+endfunction
+
+function! s:_parse_full(string, context)
+  if a:string == 'RepoMan scours the neighborhood...'
+    return {}
+  endif
+  return {'type': 'message', 'text': printf('* %s', a:string)}
+endfunction
 
 " vim: foldmethod=marker
