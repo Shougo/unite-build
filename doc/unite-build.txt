@@ -131,6 +131,10 @@ repoman		This builder outputs "repoman manifest" command output.
 
 		It requires at least one ebuild in current directory.
 
+						*unite-build-builder-ant*
+ant		This builder outputs "ant" command output.
+		Todo:
+
 ==============================================================================
 CREATE BUILDER					*unite-build-create-builder*
 
