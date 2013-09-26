@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: make.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 02 Mar 2013.
+" Last Modified: 26 Sep 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -87,7 +87,7 @@ function! s:builder.parse(string, context) "{{{
         \ { 'type' : 'message', 'text' : a:string } : {}
 endfunction "}}}
 
-function! s:analyze_error(string, current_dir, is_bang)
+function! s:analyze_error(string, current_dir, is_bang) "{{{
   let string = a:string
   if !a:is_bang && stridx(string, '<') >= 0
     " Snip nested template.
@@ -102,7 +102,7 @@ function! s:analyze_error(string, current_dir, is_bang)
     return { 'type' : 'message', 'text' : string }
   endif
 
-  if len(word) == 1 && unite#util#is_win()
+  if len(word) == 1 && unite#util#is_windows()
     let candidate.word = word . list[0]
     let list = list[1:]
   endif
@@ -141,7 +141,7 @@ function! s:analyze_error(string, current_dir, is_bang)
   let candidate.text = fnamemodify(filename, ':t') . ' : ' . join(list, ':')
 
   return candidate
-endfunction
+endfunction"}}}
 
 " s:snip_nest('std::vector<std::vector<int>>', '<', '>', 1)
 "  => "std::vector<std::vector<>>"

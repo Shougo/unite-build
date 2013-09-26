@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: ant.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 25 Sep 2013.
+" Last Modified: 26 Sep 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -43,15 +43,74 @@ function! s:builder.detect(args, context) "{{{
 endfunction"}}}
 
 function! s:builder.initialize(args, context) "{{{
-  let a:context.builder__dir_stack = []
   let a:context.builder__current_dir =
         \ unite#util#substitute_path_separator(getcwd())
   return g:unite_builder_ant_command . ' ' . join(a:args)
 endfunction"}}}
 
 function! s:builder.parse(string, context) "{{{
-  return a:context.source__builder_is_bang ?
-        \ { 'type' : 'message', 'text' : a:string } : {}
+  if a:string =~ '^\s*$'
+    " Skip.
+    return {}
+  elseif a:string =~ '\[.*\]\s\+\f\+:\d\+'
+    " Error or warning.
+    return s:analyze_error(matchstr(a:string,
+          \ '\[.*\]\s\+\zs\f\+:\d\+.*'), a:context.builder__current_dir)
+  endif
+
+  return { 'type' : 'message', 'text' : a:string }
 endfunction "}}}
+
+function! s:analyze_error(string, current_dir) "{{{
+  let string = a:string
+
+  let [word, list] = [string, split(string[2:], ':')]
+  let candidate = {}
+
+  if empty(list)
+    " Message.
+    return { 'type' : 'message', 'text' : string }
+  endif
+
+  if len(word) == 1 && unite#util#is_windows()
+    let candidate.word = word . list[0]
+    let list = list[1:]
+  endif
+
+  let filename = unite#util#substitute_path_separator(word[:1].list[0])
+  let candidate.filename = (filename !~ '^/\|\a\+:/') ?
+        \ a:current_dir . '/' . filename : filename
+
+  let list = list[1:]
+
+  if !filereadable(filename) && '\<\f\+:'
+    " Message.
+    return { 'type' : 'message', 'text' : string }
+  endif
+
+  if len(list) > 0 && list[0] =~ '^\d\+$'
+    let candidate.line = list[0]
+    if len(list) > 1 && list[1] =~ '^\d\+$'
+      let candidate.col = list[1]
+      let list = list[1:]
+    endif
+
+    let list = list[1:]
+  endif
+
+  if len(list) > 1 && list[0] =~ '\s*\a\+'
+    let candidate.type = tolower(matchstr(list[0], '\s*\zs\a\+'))
+    if candidate.type != 'error' && candidate.type != 'warning'
+      let candidate.type = 'message'
+    endif
+    let list = list[1:]
+  else
+    let candidate.type = 'message'
+  endif
+
+  let candidate.text = fnamemodify(filename, ':t') . ' : ' . join(list, ':')
+
+  return candidate
+endfunction"}}}
 
 " vim: foldmethod=marker

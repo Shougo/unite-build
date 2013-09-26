@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: build.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 08 May 2013.
+" Last Modified: 26 Sep 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -176,8 +176,8 @@ function! s:source.async_gather_candidates(args, context) "{{{
         \ "unite#util#iconv(v:val, 'char', &encoding)")
     let candidate = a:context.source__builder.parse(string, a:context)
     if !empty(candidate)
-      call s:init_candidate(candidate)
-      call add(candidates, candidate)
+      call add(candidates, extend(candidate,
+            \ s:default_candidate(), 'keep'))
     endif
   endfor
 
@@ -208,24 +208,19 @@ function! s:source.async_gather_candidates(args, context) "{{{
     \   'action__directory' :
     \       unite#util#path2directory(v:val.filename),
     \   'is_matched' : (v:val.type !=# 'message'),
+    \   'is_multiline' : 1,
     \ }")
 
   return candidates
 endfunction "}}}
 
-function! s:init_candidate(candidate)
-  if !has_key(a:candidate, 'filename')
-    let a:candidate.filename = ''
-  endif
-  if !has_key(a:candidate, 'line')
-    let a:candidate.line = 0
-  endif
-  if !has_key(a:candidate, 'col')
-    let a:candidate.col = 0
-  endif
-  if !has_key(a:candidate, 'pattern')
-    let a:candidate.pattern = ''
-  endif
+function! s:default_candidate()
+  return {
+        \ 'filename' : '',
+        \ 'line' : 0,
+        \ 'col' : 0,
+        \ 'pattern' : '',
+        \ }
 endfunction
 
 function! s:init_builders()
