@@ -33,7 +33,6 @@ Interface		|unite-build-interface|
   Sources		  |unite-build-builders|
 Create source		|unite-build-create-builder|
 Configuration Examples	|unite-build-builder-examples|
-Changelog		|unite-build-changelog|
 
 ==============================================================================
 USAGE						*unite-build-usage*
@@ -44,6 +43,7 @@ USAGE						*unite-build-usage*
 
 		Source arguments:
 		1. builder name.
+		2-. builder arguments.
 
 	Start unite build source. Builder is detected.
 >
@@ -124,6 +124,9 @@ BUILDERS					*unite-build-builders*
 make		This builder outputs "make" command output.
 		It requires "Makefile" in current directory.
 
+		Builder arguments:
+		1-. make arguments.
+
 						*unite-build-builder-repoman*
 repoman		This builder outputs "repoman manifest" command output.
 		repoman is a tool for Gentoo Linux to manage ebuild files, the
@@ -133,7 +136,10 @@ repoman		This builder outputs "repoman manifest" command output.
 
 						*unite-build-builder-ant*
 ant		This builder outputs "ant" command output.
-		Todo:
+
+		Builder arguments:
+		1-. ant arguments.
+
 
 ==============================================================================
 CREATE BUILDER					*unite-build-create-builder*
@@ -203,60 +209,5 @@ EXAMPLES					*unite-build-examples*
 >
 	
 <
-==============================================================================
-CHANGELOG					*unite-build-changelog*
-
-2013-05-08
-- Check binary file.
-
-2013-03-09
-- Added repoman builder.
-
-2013-03-02
-- Fixed error.
-
-2012-10-26
-- Fixed encoding problem.
-
-2011-12-12
-- Escaped pattern.
-
-2011-12-06
-- Fixed waitpid() error.
-
-2011-11-11
-- Improved build error.
-
-2011-11-03
-- Added :UniteBuildClearHighlight command.
-
-2011-10-22
-- Supported signs.
-
-2011-10-18
-- Improved make builder filtering.
-- Detect makefile.
-
-2011-10-17
-- Fixed make builder.
-- Improved candidates behavior.
-- Fixed make builder error.
-- Improved make builder filtering.
-- Supported not filtered behavior.
-- Improved documentation.
-
-2011-10-16
-- Improved make parse.
-- Set locale.
-
-2011-10-15
-- Added unite build source.
-- Added make builder.
-- Improved process open.
-- Parse make output.
-- Added unite#sources#build#get_builders_name().
-- Added documentation.
-- Snip nested template.
-
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:noet:fen:
