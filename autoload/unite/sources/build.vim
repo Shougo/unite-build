@@ -39,9 +39,9 @@ call unite#util#set_default('g:unite_build_warning_icon', '')
 function! unite#sources#build#define() "{{{
   if has('signs')
     " Init signs.
-    let error_icon = filereadable(g:unite_build_error_icon) ?
+    let error_icon = filereadable(expand(g:unite_build_error_icon)) ?
           \ ' icon=' . escape(expand(g:unite_build_error_icon), '| \') : ''
-    let warning_icon = filereadable(g:unite_build_warning_icon) ?
+    let warning_icon = filereadable(expand(g:unite_build_warning_icon)) ?
           \ ' icon=' . escape(expand(g:unite_build_warning_icon), '| \') : ''
     execute 'sign define unite_build_error text=' . g:unite_build_error_text .
           \ ' linehl=' . g:unite_build_error_highlight . error_icon
