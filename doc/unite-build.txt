@@ -117,6 +117,16 @@ g:unite_builder_repoman_command			*g:unite_builder_repoman_command*
 
 		Default is "repoman".
 
+g:unite_builder_ant_command			*g:unite_builder_ant_command*
+		|unite-build-builder-ant| uses as the "ant" command.
+
+		Default is "ant".
+
+g:unite_builder_maven_command			*g:unite_builder_maven_command*
+		|unite-build-builder-maven| uses as the "maven" command.
+
+		Default is "mvn".
+
 ==============================================================================
 BUILDERS					*unite-build-builders*
 
@@ -139,6 +149,13 @@ ant		This builder outputs "ant" command output.
 
 		Builder arguments:
 		1-. ant arguments.
+
+
+						*unite-build-builder-maven*
+maven		This builder outputs "maven" command output.
+
+		Builder arguments:
+		1-. ant arguments(default is "compile").
 
 
 ==============================================================================
