@@ -1,7 +1,6 @@
 "=============================================================================
 " FILE: build.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 26 Sep 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -114,6 +113,11 @@ function! s:source.gather_candidates(args, context) "{{{
   if empty(a:context.source__builder_name)
     let a:context.is_async = 0
     call unite#print_message('[build] empty builder.')
+    return []
+  elseif !has_key(s:builders, a:context.source__builder_name)
+    let a:context.is_async = 0
+    call unite#print_message('[build] builder "' .
+          \ a:context.source__builder_name . '" is not found.')
     return []
   endif
 

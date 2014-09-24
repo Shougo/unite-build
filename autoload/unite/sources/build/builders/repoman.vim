@@ -1,8 +1,6 @@
 "=============================================================================
 " FILE: repoman.vim
 " AUTHOR:  Tatsuhiro Ujihisa <ujihisa at gmail.com>
-" Last Modified: Sat Mar  9 18:01:03 PST 2013
-"
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -30,7 +28,7 @@ call unite#util#set_default('g:unite_builder_repoman_command', 'repoman')
 "}}}
 
 function! unite#sources#build#builders#repoman#define() "{{{
-  return executable(g:unite_builder_repoman_command) ?
+  return executable(unite#util#expand(g:unite_builder_repoman_command)) ?
         \ s:builder : []
 endfunction "}}}
 

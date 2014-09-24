@@ -1,7 +1,6 @@
 "=============================================================================
 " FILE: ant.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu at gmail.com>
-" Last Modified: 26 Sep 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -29,7 +28,7 @@ call unite#util#set_default('g:unite_builder_ant_command', 'ant')
 "}}}
 
 function! unite#sources#build#builders#ant#define() "{{{
-  return executable(g:unite_builder_ant_command) ?
+  return executable(unite#util#expand(g:unite_builder_ant_command)) ?
         \ s:builder : []
 endfunction "}}}
 
