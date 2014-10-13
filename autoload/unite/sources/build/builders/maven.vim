@@ -55,7 +55,7 @@ function! s:builder.parse(string, context) "{{{
   elseif a:string =~ '\[\u\+\]\s*$'
     " Skip.
     return {}
-  elseif a:string =~ '\[\u\+\]\s\+\f\+:\[\d\+,\d\+\]\s\+'
+  elseif a:string =~ ' error: '
     " Error or warning.
     return s:analyze_error(a:string, a:context.builder__current_dir)
   endif
@@ -66,13 +66,13 @@ endfunction "}}}
 
 function! s:analyze_error(string, current_dir) "{{{
   let matches = matchlist(a:string,
-        \ '\[\u\+\]\s\+\(\f\+\):\[\(\d\+\),\(\d\+\)\]\s\+\(.*\)$')
+        \ '^\(\[\u\+\]\)\?\s\+\(\f\+\):\[\(\d\+\),\(\d\+\)\]\s\+\(.*\)$')
   let filename = unite#util#substitute_path_separator(matches[1])
   if filename !~ '^/\|\a\+:/'
     let filename = a:current_dir . '/' . filename
   endif
 
-  return { 'type' : (a:string =~# '^\[ERROR\]' ? 'error' : 'warning'),
+  return { 'type' : (a:string =~# ' error: ' ? 'error' : 'warning'),
         \ 'filename' : filename, 'line' : matches[2], 'col' : matches[3],
         \ 'text' : fnamemodify(filename, ':t') . ' : ' . matches[4] }
 endfunction"}}}
