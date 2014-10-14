@@ -127,6 +127,11 @@ g:unite_builder_maven_command			*g:unite_builder_maven_command*
 
 		Default is "mvn".
 
+g:unite_builder_go_command			*g:unite_builder_go_command*
+		|unite-build-builder-go| uses as the "go" command.
+
+		Default is "go".
+
 ==============================================================================
 BUILDERS					*unite-build-builders*
 
@@ -156,6 +161,13 @@ maven		This builder outputs "maven" command output.
 
 		Builder arguments:
 		1-. ant arguments(default is "compile").
+
+						*unite-build-builder-go*
+go		This builder outputs "go" command output.
+
+		Builder arguments:
+		1-. arguments(default is "build").
+
 
 
 ==============================================================================
