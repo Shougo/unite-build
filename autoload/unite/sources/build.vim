@@ -109,6 +109,11 @@ function! s:source.hooks.on_close(args, context) "{{{
   endif
 endfunction "}}}
 
+function! s:source.complete(args, context, arglead, cmdline, cursorpos) "{{{
+  return filter(unite#sources#build#get_builders_name(),
+        \ 'stridx(v:val, a:arglead) == 0')
+endfunction"}}}
+
 function! s:source.gather_candidates(args, context) "{{{
   if empty(a:context.source__builder_name)
     let a:context.is_async = 0
