@@ -132,6 +132,11 @@ g:unite_builder_go_command			*g:unite_builder_go_command*
 
 		Default is "go".
 
+g:unite_builder_vint_command			*g:unite_builder_vint_command*
+		|unite-build-builder-vint| uses as the "vint" command.
+
+		Default is "vint".
+
 ==============================================================================
 BUILDERS					*unite-build-builders*
 
@@ -167,6 +172,15 @@ go		This builder outputs "go" command output.
 
 		Builder arguments:
 		1-. arguments(default is "build").
+
+
+
+						*unite-build-builder-vint*
+vint		This builder outputs "vint" command output.
+		https://github.com/Kuniwak/vint
+
+		Builder arguments:
+		1-. arguments.
 
 
 
