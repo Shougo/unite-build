@@ -65,6 +65,7 @@ function! unite#sources#build#get_builders_name() "{{{
   return keys(s:builders)
 endfunction "}}}
 
+let s:CP = vital#of('vital').import('ConcurrentProcess') " TODO Just for now
 let s:init_id = 10000
 let s:sign_id_dict = {}
 
@@ -105,7 +106,7 @@ function! s:source.hooks.on_syntax(args, context) "{{{
 endfunction"}}}
 function! s:source.hooks.on_close(args, context) "{{{
   if has_key(a:context, 'source__proc')
-    call a:context.source__proc.waitpid()
+    call s:CP.shutdown(a:context.source__proc)
   endif
 endfunction "}}}
 
@@ -155,33 +156,26 @@ function! s:source.gather_candidates(args, context) "{{{
   " Set locale to English.
   let lang_save = $LANG
   let $LANG = 'C'
-  let a:context.source__proc = vimproc#pgroup_open(cmdline, 0, 2)
+  let a:context.source__proc = s:CP.of(cmdline, '', [
+        \ ['*read-all*', 'x']])
   let $LANG = lang_save
-
-  " Close handles.
-  call a:context.source__proc.stdin.close()
 
   return []
 endfunction "}}}
 
 function! s:source.async_gather_candidates(args, context) "{{{
-  let stdout = a:context.source__proc.stdout
-  if stdout.eof
+  let label = a:context.source__proc
+  let [stdout, stderr] = s:CP.consume(label, 'x')
+  if s:CP.is_done(label, 'x')
     " Disable async.
     call unite#print_message('[build] Completed.')
-
-    let [cond, status] = a:context.source__proc.waitpid()
-    if status
-      call unite#print_message('[build] Build error occurred.')
-    endif
-    " Disable waitpid().
     call remove(a:context, 'source__proc')
 
     let a:context.is_async = 0
   endif
 
   let candidates = []
-  for string in map(stdout.read_lines(-1, 300),
+  for string in map(split(stdout . stderr, "\r\\?\n"),
         \ "unite#util#iconv(v:val, 'char', &encoding)")
     let candidate = a:context.source__builder.parse(string, a:context)
     if !empty(candidate)
