@@ -112,7 +112,7 @@ function! s:analyze_error(string, current_dir, is_bang) "{{{
 
   let list = list[1:]
 
-  if !filereadable(filename) && '\<\f\+:'
+  if !filereadable(filename)
     " Message.
     return { 'type' : 'message', 'text' : string }
   endif
